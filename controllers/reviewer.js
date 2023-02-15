@@ -190,7 +190,7 @@ exports.getReviewerHome = (req, res, next) => {
 
     Video.findAll({
         order: [['createdAt', 'DESC']],
-        attributes: ['id', 'videoTitle', 'creator', 'videoCoin', 'reviewCurrent', 'reviewGoal', 'createdAt', 'reviewDate', 'videoDetail', 'imagePath', 'videoPath'],
+        attributes: ['id', 'videoTitle', 'creator', 'category', 'videoCoin', 'reviewCurrent', 'reviewGoal', 'createdAt', 'reviewDate', 'videoDetail', 'imagePath', 'videoPath'],
         limit:3
     })
         .then(newVideos => {
@@ -218,7 +218,7 @@ exports.getReviewerHome = (req, res, next) => {
             
             return Video.findAll({
                 where: { category: '여행'},
-                attributes: ['id', 'videoTitle', 'creator', 'videoCoin', 'reviewCurrent', 'reviewGoal', 'createdAt', 'reviewDate', 'videoDetail', 'imagePath', 'videoPath'],
+                attributes: ['id', 'videoTitle', 'creator', 'category', 'videoCoin', 'reviewCurrent', 'reviewGoal', 'createdAt', 'reviewDate', 'videoDetail', 'imagePath', 'videoPath'],
                 limit:3
             });
         })
@@ -243,7 +243,7 @@ exports.getReviewerHome = (req, res, next) => {
             videos[1] = section_trip;
             return Video.findAll({
                 where: { category: '일상'},
-                attributes: ['id', 'videoTitle', 'creator', 'videoCoin', 'reviewCurrent', 'reviewGoal', 'createdAt', 'reviewDate', 'videoDetail', 'imagePath', 'videoPath'],
+                attributes: ['id', 'videoTitle', 'creator', 'category','videoCoin', 'reviewCurrent', 'reviewGoal', 'createdAt', 'reviewDate', 'videoDetail', 'imagePath', 'videoPath'],
                 limit:3
             });
         })
@@ -268,7 +268,7 @@ exports.getReviewerHome = (req, res, next) => {
             videos[2] = section_daily;
             return Video.findAll({
                 where: { category:'엔터테인먼트'},
-                attributes: ['id', 'videoTitle', 'creator', 'videoCoin', 'reviewCurrent', 'reviewGoal', 'createdAt', 'reviewDate', 'videoDetail', 'imagePath', 'videoPath'],
+                attributes: ['id', 'videoTitle', 'creator', 'category','videoCoin', 'reviewCurrent', 'reviewGoal', 'createdAt', 'reviewDate', 'videoDetail', 'imagePath', 'videoPath'],
                 limit:3
             });
         })
@@ -321,7 +321,7 @@ exports.getVideos = (req, res, next) => {
 
     Video.findAll({
         order: [['createdAt', 'DESC']],
-        attributes: ['id','videoTitle', 'creator', 'videoCoin', 'reviewCurrent', 'reviewGoal', 'createdAt', 'reviewDate', 'videoDetail', 'imagePath', 'videoPath']
+        attributes: ['id','videoTitle', 'creator', 'category', 'videoCoin', 'reviewCurrent', 'reviewGoal', 'createdAt', 'reviewDate', 'videoDetail', 'imagePath', 'videoPath']
     })
         .then(vids => {
             
@@ -380,7 +380,7 @@ exports.getVideosByCategory = (req, res, next) => {
     Video.findAll({
        where: {category: categoryName},
        order: [['createdAt', 'DESC']],
-       attributes: ['id','videoTitle', 'creator', 'videoCoin', 'reviewCurrent', 'reviewGoal', 'createdAt', 'reviewDate', 'videoDetail', 'imagePath', 'videoPath']
+       attributes: ['id','videoTitle', 'creator', 'category','videoCoin', 'reviewCurrent', 'reviewGoal', 'createdAt', 'reviewDate', 'videoDetail', 'imagePath', 'videoPath']
     })
     .then(vids => {
             
@@ -453,7 +453,7 @@ exports.searchVideos = (req, res, next) => {
             ]
          },
         order: [['createdAt', 'DESC']],
-        attributes: ['id', 'videoTitle', 'creator', 'videoCoin', 'reviewCurrent', 'reviewGoal', 'createdAt', 'reviewDate', 'videoDetail', 'imagePath', 'videoPath']
+        attributes: ['id', 'videoTitle', 'creator', 'category','videoCoin', 'reviewCurrent', 'reviewGoal', 'createdAt', 'reviewDate', 'videoDetail', 'imagePath', 'videoPath']
     })
         .then(vids => {
             

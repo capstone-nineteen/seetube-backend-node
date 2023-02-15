@@ -172,7 +172,7 @@ exports.getYoutuberHome = (req, res, next) => {
                 where:{youtuberId: youtuberId,
                         isReviewed: true},
     
-                attributes:['videoTitle', 'creator', 'videoCoin', 'reviewCurrent', 'reviewGoal', 'createdAt', 'reviewDate', 'videoDetail', 'imagePath']
+                attributes:['id','videoTitle', 'creator','category', 'videoCoin', 'reviewCurrent', 'reviewGoal', 'createdAt', 'reviewDate', 'videoDetail', 'imagePath', 'videoPath']
             })
         })
         .then(finishedReviews => {
@@ -182,7 +182,7 @@ exports.getYoutuberHome = (req, res, next) => {
                 where:{youtuberId: youtuberId,
                         isReviewed: false},
     
-                attributes:['videoTitle', 'creator', 'videoCoin', 'reviewCurrent', 'reviewGoal', 'createdAt', 'reviewDate', 'videoDetail', 'imagePath']
+                attributes:['id','videoTitle', 'creator', 'category', 'videoCoin', 'reviewCurrent', 'reviewGoal', 'createdAt', 'reviewDate', 'videoDetail', 'imagePath', 'videoPath']
             
              })
         })

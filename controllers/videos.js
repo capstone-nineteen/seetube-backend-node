@@ -16,7 +16,7 @@ exports.getVideo = (req, res, next) => {
 
     Video.findOne({
         where:{id: videoId},
-        attributes:['videoTitle', 'creator', 'videoCoin', 'reviewCurrent', 'reviewGoal', 'createdAt', 'reviewDate', 'videoDetail', 'imagePath', 'videoPath'],
+        attributes:['id','videoTitle', 'creator', 'category', 'videoCoin', 'reviewCurrent', 'reviewGoal', 'createdAt', 'reviewDate', 'videoDetail', 'imagePath', 'videoPath'],
 
     })
       .then(video => {
@@ -25,8 +25,10 @@ exports.getVideo = (req, res, next) => {
             error.statusCode = 404;
             throw error;
         }
-        videoObject.videoTitle = video.Title;
+        videoObject.id = video.id;
+        videoObject.videoTitle = video.videoTitle;
         videoObject.creator = video.creator;
+        videoObject.category = video.category;
         videoObject.videoCoin = video.videoCoin;
         videoObject.reviewCurrent = video.reviewCurrent;
         videoObject.reviewGoal = video.reviewGoal;
