@@ -7,7 +7,7 @@ const sequelize = require('./util/database');
 
 const reviewerRoutes = require('./routes/reviewer');
 const youtuberRoutes = require('./routes/youtuber');
-const authRoutes = require('./routes/auth');
+
 
 const Reviewer = require('./models/reviewer');
 const Video = require('./models/video');
@@ -46,7 +46,7 @@ app.use((req, res, next) => {
   
   app.use('/reviewer', reviewerRoutes);
   app.use('/youtuber', youtuberRoutes);
-  app.use('/auth', authRoutes);
+  
 
   app.use((error, req, res, next) => {
     console.log(error);

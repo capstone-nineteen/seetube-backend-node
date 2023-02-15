@@ -19,6 +19,11 @@ const Youtuber = sequelize.define('youtuber', {
     youtuberEmail: {
         type:Sequelize.STRING,
         allowNull: false
+    },
+
+    youtuberPassword: {
+        type:Sequelize.STRING,
+        allowNull:false
     }
 });
 

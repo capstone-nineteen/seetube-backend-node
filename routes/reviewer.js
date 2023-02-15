@@ -8,6 +8,25 @@ const router = express.Router();
 const { body } = require('express-validator');
 
 const isAuth = require('../middleware/is-auth');
+
+router.put('/email',
+
+  body('email')
+  .isEmail()
+  .normalizeEmail(), reviewerController.emailAuth);
+
+
+router.post('/signup',
+[
+    body('password')
+      .trim()
+      .isLength({ min: 10 }),
+    body('name')
+      .trim()
+      .isLength({ min: 2 })
+] ,reviewerController.signup);
+
+
 //리뷰어 홈
 router.get('/home', reviewerController.getReviewerHome);
 
@@ -48,5 +67,7 @@ router.post('/withdraw',
   reviewerController.postWithdraw
 
 );
+
+router.post('/review', reviewerController.postReview);
 
 module.exports = router;
