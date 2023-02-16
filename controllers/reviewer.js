@@ -384,24 +384,35 @@ exports.getVideosByCategory = (req, res, next) => {
     })
     .then(vids => {
             
-            
-        for (let vid of vids){
+        if (vids.length == 0) {res.status(200).json({videos:vids});}
+        
+        else {
+            for (let vid of vids){
 
-            Review.findOne({
-                where:{videoId: vid.id,
-                    reviewerId: reviewerId}
-            }).then(review => {
-                if (!review) {vid.dataValues.isReviewerReviewed = false;}
-                else {vid.dataValues.isReviewerReviewed = true;}
-                
-                video = vid.dataValues;
-                videos.push(video);
-                
-                if (vid === vids[vids.length-1]){
-                    console.log(videos);
-                    res.status(200).json({videos:videos});
-                }
+                Review.findOne({
+                    where:{videoId: vid.id,
+                        reviewerId: reviewerId}
+                }).then(review => {
+                    if (!review) {vid.dataValues.isReviewerReviewed = false;}
+                    else {vid.dataValues.isReviewerReviewed = true;}
+                    
+                    video = vid.dataValues;
+                    videos.push(video);
+                    
+                    if (vid === vids[vids.length-1]){
+                        console.log(videos);
+                        res.status(200).json({videos:videos});
+                    }
 
+                })
+                .catch(err => {
+                    if(!err.statusCode){
+                        err.statusCode = 500;
+                    }
+                    next(err);
+                })
+             }
+            }
 
             }).catch(err => {
                 if(!err.statusCode){
@@ -417,14 +428,7 @@ exports.getVideosByCategory = (req, res, next) => {
         
 
 
-    })
-        .catch(err => {
-            if(!err.statusCode){
-             err.statusCode = 500;
-        }
-        next(err);
-    });
-};
+    
 
 //검색 결과 영상목록
 exports.searchVideos = (req, res, next) => {
@@ -456,8 +460,10 @@ exports.searchVideos = (req, res, next) => {
         attributes: ['id', 'videoTitle', 'creator', 'category','videoCoin', 'reviewCurrent', 'reviewGoal', 'createdAt', 'reviewDate', 'videoDetail', 'imagePath', 'videoPath']
     })
         .then(vids => {
+        
+        if (vids.length == 0){res.status(201).json({videos:vids});}
             
-            
+        else{    
         for (let vid of vids){
 
             Review.findOne({
@@ -483,7 +489,7 @@ exports.searchVideos = (req, res, next) => {
                 next(err);
             })
 
-            
+        }
             
 
         }
