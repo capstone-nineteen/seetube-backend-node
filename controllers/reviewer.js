@@ -606,8 +606,8 @@ exports.getReviewerCoin = (req, res, next) => {
     Reviewer.findOne({
         where: {id: reviewerId},
         attributes: ['reviewerCoin']
-    }).then(reviewerCoin => {
-        res.status(200).json({reviewerCoin: reviewerCoin});
+    }).then(reviewer => {
+        res.status(200).json({reviewerCoin: reviewer.reviewerCoin});
     }).catch(err => {
         if(!err.statusCode){
             err.statusCode = 500;
@@ -650,7 +650,7 @@ exports.postWithdraw = (req, res, next) => {
         withdraw
         .save()
         .then(withdraw => {
-            res.status(201).json({withdraw:withdraw});
+            res.status(201).json({message: 'success', status:201});
         })
         .catch(err => {
             console.log(err);
