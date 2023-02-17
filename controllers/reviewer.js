@@ -377,6 +377,58 @@ exports.getVideosByCategory = (req, res, next) => {
     let videos = [];
     let video = {};
 
+    if (categoryName == "전체") {
+
+        Video.findAll({
+            order: [['createdAt', 'DESC']],
+            attributes: ['id','videoTitle', 'creator', 'category', 'videoCoin', 'reviewCurrent', 'reviewGoal', 'createdAt', 'reviewDate', 'videoDetail', 'imagePath', 'videoPath']
+        })
+            .then(vids => {
+                
+                
+                for (let vid of vids){
+    
+                    Review.findOne({
+                        where:{videoId: vid.id,
+                            reviewerId: reviewerId}
+                    }).then(review => {
+                        if (!review) {vid.dataValues.isReviewerReviewed = false;}
+                        else {vid.dataValues.isReviewerReviewed = true;}
+                        
+                        video = vid.dataValues;
+                        videos.push(video);
+                        
+                        if (vid === vids[vids.length-1]){
+                            console.log(videos);
+                            res.status(200).json({videos:videos});
+                        }
+    
+    
+                    }).catch(err => {
+                        if(!err.statusCode){
+                            err.statusCode = 500;
+                        }
+                        next(err);
+                    })
+    
+                    
+                    
+    
+                }
+                
+        
+    
+            })
+            
+            .catch(err => {
+                if(!err.statusCode){
+                    err.statusCode = 500;
+                }
+                next(err);
+        });
+    }
+
+    else {
     Video.findAll({
        where: {category: categoryName},
        order: [['createdAt', 'DESC']],
@@ -423,7 +475,7 @@ exports.getVideosByCategory = (req, res, next) => {
 
             
             
-
+        }
         }
         
 
@@ -548,9 +600,8 @@ exports.getMyPage = (req, res, next) => {
 //환급신청화면
 exports.getReviewerCoin = (req, res, next) => {
     
-    const reviewerId = req.reviewerId;
-
-    
+    //const reviewerId = req.reviewerId;
+    const reviewerId = 1;
 
     Reviewer.findOne({
         where: {id: reviewerId},
@@ -571,8 +622,8 @@ exports.getReviewerCoin = (req, res, next) => {
 //환급 정보 입력 화면
 exports.postWithdraw = (req, res, next) => { 
 
-    const reviewerId = req.reviewerId;
-     
+    //const reviewerId = req.reviewerId;
+    const reviewerId = 1;
     
     const errors = validationResult(req);
     if(!errors.isEmpty()){
