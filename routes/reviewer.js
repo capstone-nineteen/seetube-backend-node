@@ -50,9 +50,6 @@ router.get('/coin', reviewerController.getReviewerCoin);
 
 router.post('/withdraw', 
   [
-    body('amount')
-      .trim()
-      .isLength({ min: 5 }),
     body('bankName')
       .trim()
       .isLength({ min: 2 }),
@@ -61,7 +58,7 @@ router.post('/withdraw',
         .isLength({ min: 2 }),
     body('accountNumber')
       .trim()
-        .isLength({min : 10})
+        .isLength({min: 10, max:20})
     
   ],
   reviewerController.postWithdraw
@@ -69,5 +66,7 @@ router.post('/withdraw',
 );
 
 router.post('/review', reviewerController.postReview);
+
+router.post('/watchingInfo', reviewerController.postWatchingInfos);
 
 module.exports = router;

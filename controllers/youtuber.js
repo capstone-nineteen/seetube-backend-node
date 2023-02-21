@@ -199,3 +199,9 @@ exports.getYoutuberHome = (req, res, next) => {
         });
     
 };
+
+//집중도 분석 결과 화면
+//exports.getConcentrationResult = (req, res, next) => {
+
+  
+//}

@@ -1,0 +1,39 @@
+const Sequelize = require('sequelize');
+
+const sequelize = require('../util/database');
+
+const WatchingInfo = sequelize.define('watchingInfo', {
+
+    id:{
+        type:Sequelize.INTEGER,
+        allowNull:false,
+        autoIncrement:true,
+        primaryKey:true
+    },
+
+    playTime:{
+        type:Sequelize.INTEGER,
+        allowNull:false
+    },
+
+    gazeInfo:{
+        type:Sequelize.JSON,
+        allowNull:false
+    },
+
+    emotionInfo:{
+        type:Sequelize.JSON,
+        allowNull:false
+    }
+    /*
+    watchingInfo:{
+        type:Sequelize.JSON,
+        allowNull:false
+    }
+    */
+}, {
+    timestamps: false,
+    initialAutoIncrement:1
+});
+
+module.exports = WatchingInfo;

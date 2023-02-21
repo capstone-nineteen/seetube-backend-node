@@ -14,6 +14,7 @@ const Video = require('./models/video');
 const Youtuber = require('./models/youtuber');
 const Review = require('./models/review');
 const Withdraw = require('./models/withdraw');
+const WatchingInfo = require('./models/watchingInfo');
 
 Video.belongsTo(Youtuber, { constraints: true, onDelete: 'CASCADE'});
 Youtuber.hasMany(Video);
@@ -26,6 +27,12 @@ Video.hasMany(Review);
 
 Withdraw.belongsTo(Reviewer, { constraints: true, onDelete: 'CASCADE' });
 Reviewer.hasMany(Withdraw);
+
+WatchingInfo.belongsTo(Reviewer, { constraints: true, onDelete: 'CASCADE'});
+Reviewer.hasMany(WatchingInfo);
+
+WatchingInfo.belongsTo(Video, { constraints: true, onDelete: 'CASCADE'});
+Video.hasMany(WatchingInfo);
 
 const app = express();
 

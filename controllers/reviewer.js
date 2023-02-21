@@ -2,6 +2,7 @@ const Reviewer = require('../models/reviewer');
 const Review = require('../models/review');
 const Withdraw = require('../models/withdraw');
 const Video = require('../models/video');
+const WatchingInfo = require('../models/watchingInfo');
 
 const { validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
@@ -574,6 +575,7 @@ exports.getMyPage = (req, res, next) => {
         return Review.findAll({
             where:{reviewerId: reviewerId},
             attributes: ['reviewDate'],
+            order: [['reviewDate', 'DESC']],
             include:{
                 model:Video,
                 attributes: ['videoTitle', 'videoCoin']
@@ -587,6 +589,7 @@ exports.getMyPage = (req, res, next) => {
 
         return Withdraw.findAll({
             where:{reviewerId:reviewerId},
+            order: [['withdrawDate', 'DESC']],
             attributes: ['withdrawCoin', 'withdrawDate']
         });
 
@@ -692,7 +695,7 @@ exports.postReview = (req, res, next) => {
 
     review.save()
     .then(review => {
-        res.status(200).json({message: 'review finished', review: review});
+        res.status(200).json({message: 'review finished', status:200});
     })
 
 
@@ -718,4 +721,35 @@ exports.postReview = (req, res, next) => {
     
   
 
+}
+
+exports.postWatchingInfos = (req, res, next) => {
+    const reviewerId = 1;
+    const videoId = req.query.videoId;
+
+    const watchingInfos = req.body.watchingInfos;
+    
+
+    for (var object of watchingInfos){
+        const playTime = object.playTime;
+        const gazeInfo = object.gazeInfo;
+        const emotionInfo = object.emotionInfo;
+
+        const watchingInfo = new WatchingInfo({
+            reviewerId: reviewerId,
+            videoId:videoId,
+            playTime:playTime,
+            gazeInfo:gazeInfo,
+            emotionInfo:emotionInfo
+
+        });
+
+        watchingInfo.save();
+        
+    }
+
+    res.status(200).json({message: 'watchingInfos saved', status:200});
+    
+
+    
 }
