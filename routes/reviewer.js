@@ -65,7 +65,7 @@ router.post('/withdraw',
 
 );
 
-router.post('/review', reviewerController.postReview);
+
 
 router.post('/watchingInfo', reviewerController.postWatchingInfos);
 

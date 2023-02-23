@@ -729,6 +729,7 @@ exports.postWatchingInfos = (req, res, next) => {
 
     const watchingInfos = req.body.watchingInfos;
     
+    
 
     for (var object of watchingInfos){
         const playTime = object.playTime;
@@ -748,8 +749,43 @@ exports.postWatchingInfos = (req, res, next) => {
         
     }
 
-    res.status(200).json({message: 'watchingInfos saved', status:200});
     
+    const review = new Review({
+        reviewerId: reviewerId,
+        videoId: videoId
+    });
 
+    review.save()
+    .then(review => {
+        res.status(200).json({message: 'watchingInfos and review saved', status:200});
+    }).catch(err => {
+        if(!err.statusCode){
+            err.statusCode = 500;
+        }
+        next(err);
+    })
+
+
+    let videoCoin;
+    let previousCoin;
+    let currentCoin;
+
+    Video.findByPk(videoId).then(video => {
+        videoCoin = video.videoCoin;
+        return Reviewer.findByPk(reviewerId)
+    }).then(reviewer => {
+        previousCoin = reviewer.reviewerCoin;
+        currentCoin = previousCoin + videoCoin;
+        reviewer.reviewerCoin = currentCoin;
+        reviewer.save();
+    }).catch(err => {
+        if(!err.statusCode){
+            err.statusCode = 500;
+        }
+        next(err);
+    });
+
+    
+  
     
 }
