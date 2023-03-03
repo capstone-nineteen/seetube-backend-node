@@ -26,29 +26,30 @@ router.post('/signup',
       .isLength({ min: 2 })
 ] ,reviewerController.signup);
 
+router.post('/login', reviewerController.login);
 
 //리뷰어 홈
-router.get('/home', reviewerController.getReviewerHome);
+router.get('/home', isAuth, reviewerController.getReviewerHome);
 
 //전체 영상목록
-router.get('/videos/all', reviewerController.getVideos);
+router.get('/videos/all', isAuth, reviewerController.getVideos);
 
 //카테고리별 영상목록
-router.get('/videos/category/:categoryName', reviewerController.getVideosByCategory);
+router.get('/videos/category/:categoryName', isAuth, reviewerController.getVideosByCategory);
 
 //검색결과 영상목록
-router.get('/videos/search', reviewerController.searchVideos);
+router.get('/videos/search', isAuth, reviewerController.searchVideos);
 
 //영상 상세화면
-router.get('/video/:videoId', videoController.getVideo);
+router.get('/video/:videoId', isAuth, videoController.getVideo);
 
 //마이페이지
-router.get('/mypage', reviewerController.getMyPage);
+router.get('/mypage', isAuth, reviewerController.getMyPage);
 
 //환급페이지
-router.get('/coin', reviewerController.getReviewerCoin);
+router.get('/coin', isAuth, reviewerController.getReviewerCoin);
 
-router.post('/withdraw', 
+router.post('/withdraw', isAuth,
   [
     body('bankName')
       .trim()
@@ -67,6 +68,6 @@ router.post('/withdraw',
 
 
 
-router.post('/watchingInfo', reviewerController.postWatchingInfos);
+router.post('/watchingInfo', isAuth, reviewerController.postWatchingInfos);
 
 module.exports = router;

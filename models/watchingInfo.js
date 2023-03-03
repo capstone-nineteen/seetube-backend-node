@@ -11,26 +11,12 @@ const WatchingInfo = sequelize.define('watchingInfo', {
         primaryKey:true
     },
 
-    playTime:{
-        type:Sequelize.INTEGER,
-        allowNull:false
-    },
-
-    gazeInfo:{
-        type:Sequelize.JSON,
-        allowNull:false
-    },
-
-    emotionInfo:{
+    
+    watchingInfos:{
         type:Sequelize.JSON,
         allowNull:false
     }
-    /*
-    watchingInfo:{
-        type:Sequelize.JSON,
-        allowNull:false
-    }
-    */
+    
 }, {
     timestamps: false,
     initialAutoIncrement:1

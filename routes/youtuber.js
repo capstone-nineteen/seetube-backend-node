@@ -26,6 +26,6 @@ router.post('/signup',
 
 router.post('/login', youtuberController.login);
 
-router.get('/home', youtuberController.getYoutuberHome);
+router.get('/home', isAuth, youtuberController.getYoutuberHome);
 
 module.exports = router;

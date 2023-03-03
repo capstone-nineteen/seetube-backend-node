@@ -32,9 +32,8 @@ exports.emailAuth = (req, res, next) => {
   Reviewer.findOne({where: {reviewerEmail: email}})
    .then(reviewer => {
     if (reviewer) {
-     const error = new Error('A user with this email already exists.');
-     error.statusCode = 422;
-     throw error;
+        res.status(200).json({message:'A user with this email already exists.', status: 200});
+     
     } 
     else {
     const authNumber = generateRandom(111111,999999);
@@ -59,9 +58,7 @@ exports.emailAuth = (req, res, next) => {
          // return res.status(statusCode.OK).send(util.fail(statusCode.BAD_REQUEST, responseMsg.AUTH_EMAIL_SUCCESS));
         } else {
           
-          return this.authCheck(authNumber);
-
-         //return res.status(200).json({authNumber: authNumber});
+          return res.status(200).json({authNumber: authNumber});
           //return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMsg.AUTH_EMAIL_SUCCESS, {
           //  authNumber: authNumber
         };
@@ -105,7 +102,7 @@ exports.signup = (req, res, next) => {
   
         reviewer.save()
           .then(reviewer => {
-            res.status(201).json({message: 'reviewer created.'});
+            res.status(200).json({message: 'reviewer created.', status:200});
           })
           .catch(err => {
             if(!err.statusCode) err.statusCode = 500;
@@ -164,7 +161,7 @@ exports.login = (req, res, next) => {
 //리뷰어 홈
 exports.getReviewerHome = (req, res, next) => {
     
-    const reviewerId = 1
+    const reviewerId = req.id;
 
     const reviewerHome = [];
     const videos = [];
@@ -196,7 +193,9 @@ exports.getReviewerHome = (req, res, next) => {
     })
         .then(newVideos => {
             
-            for (let i = 0; i < 3; i++){
+            
+
+            for (let i = 0; i < newVideos.length; i++){
                 Review.findOne({
                     where:{videoId: newVideos[i].dataValues.id,
                     reviewerId: reviewerId }
@@ -314,7 +313,7 @@ exports.getReviewerHome = (req, res, next) => {
 //전체 영상목록
 exports.getVideos = (req, res, next) => {
 
-    const reviewerId = 1;
+    const reviewerId = req.id;
     let video = {};
     let videos = [];
     
@@ -373,7 +372,7 @@ exports.getVideos = (req, res, next) => {
 //카테고리별 영상목록
 exports.getVideosByCategory = (req, res, next) => {
     const categoryName = req.params.categoryName;
-    const reviewerId = 1;
+    const reviewerId = req.id;
 
     let videos = [];
     let video = {};
@@ -485,7 +484,7 @@ exports.getVideosByCategory = (req, res, next) => {
 
 //검색 결과 영상목록
 exports.searchVideos = (req, res, next) => {
-    const reviewerId = 1;
+    const reviewerId = req.id;
     let videos = [];
     let video = {};
     
@@ -565,7 +564,7 @@ exports.getMyPage = (req, res, next) => {
     const myPage = [];
     const reviewHistory = {};
 
-    const reviewerId = 1;
+    const reviewerId = req.id;
     Reviewer.findOne({
         where: {id: reviewerId},
         attributes: ['reviewerName', 'reviewerCoin']
@@ -604,7 +603,7 @@ exports.getMyPage = (req, res, next) => {
 exports.getReviewerCoin = (req, res, next) => {
     
     //const reviewerId = req.reviewerId;
-    const reviewerId = 1;
+    const reviewerId = req.id;
 
     Reviewer.findOne({
         where: {id: reviewerId},
@@ -626,7 +625,7 @@ exports.getReviewerCoin = (req, res, next) => {
 exports.postWithdraw = (req, res, next) => { 
 
     //const reviewerId = req.reviewerId;
-    const reviewerId = 1;
+    const reviewerId = req.id;
     
     const errors = validationResult(req);
     if(!errors.isEmpty()){
@@ -685,7 +684,7 @@ exports.postWithdraw = (req, res, next) => {
 
 exports.postReview = (req, res, next) => {
 
-    const reviewerId = 1; //토큰으로 확인
+    const reviewerId = req.id; //토큰으로 확인
     const videoId = req.query.videoId;//파라미터로 보내야 하는 값
 
     const review = new Review({
@@ -724,39 +723,26 @@ exports.postReview = (req, res, next) => {
 }
 
 exports.postWatchingInfos = (req, res, next) => {
-    const reviewerId = 1;
+    const reviewerId = req.id;
     const videoId = req.query.videoId;
 
-    const watchingInfos = req.body.watchingInfos;
-    
-    
-
-    for (var object of watchingInfos){
-        const playTime = object.playTime;
-        const gazeInfo = object.gazeInfo;
-        const emotionInfo = object.emotionInfo;
-
-        const watchingInfo = new WatchingInfo({
-            reviewerId: reviewerId,
-            videoId:videoId,
-            playTime:playTime,
-            gazeInfo:gazeInfo,
-            emotionInfo:emotionInfo
-
-        });
-
-        watchingInfo.save();
-        
-    }
-
-    
     const review = new Review({
         reviewerId: reviewerId,
         videoId: videoId
     });
 
-    review.save()
-    .then(review => {
+    review.save();
+
+    const watchingInfos = req.body.watchingInfos;
+
+    const watchingInfo = new WatchingInfo({
+        watchingInfos: watchingInfos,
+        reviewerId: reviewerId,
+        videoId: videoId
+    });
+
+    watchingInfo.save()
+    .then(watchingInfo => {
         res.status(200).json({message: 'watchingInfos and review saved', status:200});
     }).catch(err => {
         if(!err.statusCode){

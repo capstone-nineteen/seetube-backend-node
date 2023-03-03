@@ -96,7 +96,7 @@ exports.signup = (req, res, next) => {
   
         youtuber.save()
           .then(youtuber => {
-            res.status(201).json({message: 'youtuber created.'});
+            res.status(200).json({message: 'youtuber created.', status:200});
           })
           .catch(err => {
             if(!err.statusCode) err.statusCode = 500;
@@ -155,8 +155,8 @@ exports.login = (req, res, next) => {
 //유튜버 홈
 exports.getYoutuberHome = (req, res, next) => {
 
-    req.params.youtuberId = 1;
-    const youtuberId = req.params.youtuberId;
+    
+    const youtuberId = req.id;
 
     const youtuberHome = [];
 
