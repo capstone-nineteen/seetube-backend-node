@@ -28,4 +28,6 @@ router.post('/login', youtuberController.login);
 
 router.get('/home', isAuth, youtuberController.getYoutuberHome);
 
+router.get('/focus/:videoId', youtuberController.getFocus);
+
 module.exports = router;

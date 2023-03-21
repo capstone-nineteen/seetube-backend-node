@@ -1,5 +1,9 @@
 const Youtuber = require('../models/youtuber');
 const Video = require('../models/video');
+const Focus = require('../models/focus');
+const Emotion = require('../models/emotion');
+
+
 const Sequelize = require('sequelize');
 const sequelize = require('../util/database');
 const mysql = require('mysql2');
@@ -200,8 +204,56 @@ exports.getYoutuberHome = (req, res, next) => {
     
 };
 
-//집중도 분석 결과 화면
-//exports.getConcentrationResult = (req, res, next) => {
+exports.getFocus = (req, res, next) => {
+
+  const videoId = req.params.videoId;
+
+  const FocusReport = [];
+  
+  var numOfTotalReviewers = 0;
 
   
-//}
+  Video.findOne({
+    where:{id: videoId},
+    attributes:['reviewGoal','videoPath']
+  })
+  .then(video => {
+
+    if (!video) {
+      const error = new Error('could not find video.');
+      error.statusCode = 404;
+      throw error;
+    }
+
+    FocusReport[0] = video.videoPath;
+    numOfTotalReviewers = video.reviewGoal;
+
+    return Focus.findAll({
+      where:{videoId: videoId},
+      order: [['focusRate', 'DESC']],
+      attributes:['thumbnailURL', 'focusStartTime', 'focusEndTime', 'focusRate']
+    });
+    
+  })
+  .then(scenes => {
+      
+    for (let i = 0; i < scenes.length; i++){
+
+      let focusRate = scenes[i].focusRate;
+      scenes[i].dataValues.totalNumberOfReviewers = numOfTotalReviewers;
+      let numberOfReviewersConcentrated = focusRate * numOfTotalReviewers;
+      scenes[i].dataValues.numberOfReviewersConcentrated = parseInt(numberOfReviewersConcentrated);
+    }
+
+    FocusReport[1] = scenes;
+
+    res.status(200).json({originalVideoURL:FocusReport[0], scenes:FocusReport[1]});
+      
+   })
+   .catch(err => {
+    if(!err.statusCode){
+        err.statusCode = 500;
+    }
+    next(err);
+});
+}

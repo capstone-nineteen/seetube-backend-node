@@ -7,3 +7,5 @@ const sequelize = new Sequelize('seetube', 'root', 'nineteen1919!', {
 });
 
 module.exports = sequelize;
+
+
