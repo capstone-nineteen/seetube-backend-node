@@ -30,4 +30,6 @@ router.get('/home', isAuth, youtuberController.getYoutuberHome);
 
 router.get('/focus/:videoId', youtuberController.getFocus);
 
+router.get('/emotion/:videoId', youtuberController.getEmotion);
+
 module.exports = router;

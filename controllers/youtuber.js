@@ -257,3 +257,59 @@ exports.getFocus = (req, res, next) => {
     next(err);
 });
 }
+
+exports.getEmotion = (req, res, next) => {
+
+  const videoId = req.params.videoId;
+
+  const EmotionReport = [];
+  
+  var numOfTotalReviewers = 0;
+
+  
+  Video.findOne({
+    where:{id: videoId},
+    attributes:['reviewGoal','videoPath']
+  })
+  .then(video => {
+
+    if (!video) {
+      const error = new Error('could not find video.');
+      error.statusCode = 404;
+      throw error;
+    }
+
+    EmotionReport[0] = video.videoPath;
+    numOfTotalReviewers = video.reviewGoal;
+
+    return Emotion.findAll({
+      where:{videoId: videoId},
+      order: [['emotionRate', 'DESC']],
+      attributes:['thumbnailURL', 'emotion', 'emotionStartTime', 'emotionEndTime', 'emotionRate']
+    });
+    
+  })
+  .then(scenes => {
+      
+    for (let i = 0; i < scenes.length; i++){
+
+      let emotionRate = scenes[i].emotionRate;
+      scenes[i].dataValues.totalNumberOfReviewers = numOfTotalReviewers;
+      let numberOfReviewersFelt = emotionRate * numOfTotalReviewers;
+      scenes[i].dataValues.numberOfReviewersFelt = parseInt(numberOfReviewersFelt);
+    }
+
+    EmotionReport[1] = scenes;
+
+    res.status(200).json({originalVideoURL:EmotionReport[0], scenes:EmotionReport[1]});
+      
+   })
+   .catch(err => {
+    if(!err.statusCode){
+        err.statusCode = 500;
+    }
+    next(err);
+});
+}
+
+
