@@ -2,7 +2,9 @@ const Youtuber = require('../models/youtuber');
 const Video = require('../models/video');
 const Focus = require('../models/focus');
 const Emotion = require('../models/emotion');
-
+const SceneStealer = require('../models/sceneStealer');
+const Shorts = require('../models/shorts');
+const Highlight = require('../models/highlight');
 
 const Sequelize = require('sequelize');
 const sequelize = require('../util/database');
@@ -204,6 +206,8 @@ exports.getYoutuberHome = (req, res, next) => {
     
 };
 
+//num of total reviewers를 watching Info의 count로 가져오는 게 맞을 것같다
+//데이터 가져올 때 num of total reviewers가 review goal을 달성했을 때 나와야 할 것
 exports.getFocus = (req, res, next) => {
 
   const videoId = req.params.videoId;
@@ -312,4 +316,305 @@ exports.getEmotion = (req, res, next) => {
 });
 }
 
+exports.getSceneStealer = (req, res, next) => {
 
+  const videoId = req.params.videoId;
+
+  SceneStealer.findAll({
+    where:{videoId: videoId},
+    order: [['percentageOfConcentration', 'DESC']],
+    })
+  .then(sceneStealer => {
+
+    res.status(200).json({sceneStealer:sceneStealer});
+
+    
+    
+  })
+  .catch(err => {
+    if(!err.statusCode){
+        err.statusCode = 500;
+    }
+    next(err);
+  })
+
+}
+
+exports.getShorts = (req, res, next) => {
+
+  const videoId = req.params.videoId;
+
+  Shorts.findAll({
+    where:{videoId: videoId},
+    order: [['percentageOfConcentration', 'DESC']],
+    })
+  .then(shorts => {
+
+    res.status(200).json({shorts:shorts});
+
+    
+    
+  })
+  .catch(err => {
+    if(!err.statusCode){
+        err.statusCode = 500;
+    }
+    next(err);
+  })
+
+}
+
+exports.getHighlight = (req, res, next) => {
+
+  const videoId = req.params.videoId;
+
+  const HighlightReport = [];
+  
+  var numOfTotalReviewers = 0;
+
+  var startTime1 = 0;
+  var numberOfReviewersConcentratedInFirstScene = 0;
+  var numberOfReviewersFeltInFirstScene = 0;
+  var emotionTypeInFirstScene = '';
+
+  var startTime2 = 0;
+  var numberOfReviewersConcentratedInSecondScene = 0;
+  var numberOfReviewersFeltInSecondScene = 0;
+  var emotionTypeInSecondScene = '';
+
+  var startTime3 = 0;
+  var numberOfReviewersConcentratedInThirdScene = 0;
+  var numberOfReviewersFeltInThirdScene = 0;
+  var emotionTypeInThirdScene = '';
+
+  var startTime4 = 0;
+  var numberOfReviewersConcentratedInFourthScene = 0;
+  var numberOfReviewersFeltInFourthScene = 0;
+  var emotionTypeInFourthScene = '';
+
+  var startTime5 = 0;
+  var numberOfReviewersConcentratedInFifthScene = 0;
+  var numberOfReviewersFeltInFifthScene = 0;
+  var emotionTypeInFifthScene = '';
+
+  
+  Video.findOne({
+    where:{id: videoId},
+    attributes:['reviewGoal','videoPath']
+  })
+  .then(video => {
+
+    if (!video) {
+      const error = new Error('could not find video.');
+      error.statusCode = 404;
+      throw error;
+    }
+
+    HighlightReport[0] = video.videoPath;
+    numOfTotalReviewers = video.reviewGoal;
+
+    return Highlight.findOne({
+      where:{videoId: videoId}
+    });
+    
+  })
+  .then(highlight => {
+
+    startTime1 = highlight.FirstSceneStartTimeInOriginalVideo;
+    startTime2 = highlight.SecondSceneStartTimeInOriginalVideo;
+    startTime3 = highlight.ThirdSceneStartTimeInOriginalVideo;
+    startTime4 = highlight.FourthSceneStartTimeInOriginalVideo;
+    startTime5 = highlight.FifthSceneStartTimeInOriginalVideo;
+    
+    return Focus.findOne({
+      where: {focusStartTime: startTime1}
+    });
+  })
+  .then(focus => {
+    
+    if (!focus){
+      numberOfReviewersConcentratedInFirstScene = 0;
+    }
+    else{
+    let focusRate = focus.focusRate;
+    numberOfReviewersConcentratedInFirstScene = focusRate * numOfTotalReviewers;
+    }
+
+    return Emotion.findOne({
+      where: {emotionStartTime: startTime1}
+    });
+  })
+  .then(emotion => {
+
+    if (!emotion){
+      emotionTypeInFirstScene = '없음';
+      numberOfReviewersFeltInFirstScene = 0;
+    }
+    else{
+      emotionTypeInFirstScene = emotion.emotion;
+      let emotionRate = emotion.emotionRate;
+      numberOfReviewersFeltInFirstScene = emotionRate * numOfTotalReviewers; 
+    }
+
+    return Focus.findOne({
+      where: {focusStartTime: startTime2}
+    });
+  })
+  .then(focus => {
+    
+    if (!focus){
+      numberOfReviewersConcentratedInSecondScene = 0;
+    }
+    else{
+    let focusRate = focus.focusRate;
+    numberOfReviewersConcentratedInSecondScene = focusRate * numOfTotalReviewers;
+    }
+
+    return Emotion.findOne({
+      where: {emotionStartTime: startTime2}
+    });
+  })
+  .then(emotion => {
+
+    if (!emotion){
+      emotionTypeInSecondScene = '없음';
+      numberOfReviewersFeltInSecondScene = 0;
+    }
+    else{
+      emotionTypeInSecondScene = emotion.emotion;
+      let emotionRate = emotion.emotionRate;
+      numberOfReviewersFeltInSecondScene = emotionRate * numOfTotalReviewers; 
+    }
+
+    return Focus.findOne({
+      where: {focusStartTime: startTime3}
+    });
+  })
+  .then(focus => {
+    
+    if (!focus){
+      numberOfReviewersConcentratedInThirdScene = 0;
+    }
+    else{
+    let focusRate = focus.focusRate;
+    numberOfReviewersConcentratedInThirdScene = focusRate * numOfTotalReviewers;
+    }
+
+    return Emotion.findOne({
+      where: {emotionStartTime: startTime3}
+    });
+  })
+  .then(emotion => {
+
+    if (!emotion){
+      emotionTypeInThirdScene = '없음';
+      numberOfReviewersFeltInThirdScene = 0;
+    }
+    else{
+      emotionTypeInThirdScene = emotion.emotion;
+      let emotionRate = emotion.emotionRate;
+      numberOfReviewersFeltInThirdScene = emotionRate * numOfTotalReviewers; 
+    }
+
+    return Focus.findOne({
+      where: {focusStartTime: startTime4}
+    });
+  })
+  .then(focus => {
+    
+    if (!focus){
+      numberOfReviewersConcentratedInFourthScene = 0;
+    }
+    else{
+    let focusRate = focus.focusRate;
+    numberOfReviewersConcentratedInFourthScene = focusRate * numOfTotalReviewers;
+    }
+
+    return Emotion.findOne({
+      where: {emotionStartTime: startTime4}
+    });
+  })
+  .then(emotion => {
+
+    if (!emotion){
+      emotionTypeInFourthScene = '없음';
+      numberOfReviewersFeltInFourthScene = 0;
+    }
+    else{
+      emotionTypeInFourthScene = emotion.emotion;
+      let emotionRate = emotion.emotionRate;
+      numberOfReviewersFeltInFourthScene = emotionRate * numOfTotalReviewers; 
+    }
+
+    return Focus.findOne({
+      where: {focusStartTime: startTime5}
+    });
+  })
+  .then(focus => {
+    
+    if (!focus){
+      numberOfReviewersConcentratedInFifthScene = 0;
+    }
+    else{
+    let focusRate = focus.focusRate;
+    numberOfReviewersConcentratedInFifthScene = focusRate * numOfTotalReviewers;
+    }
+
+    return Emotion.findOne({
+      where: {emotionStartTime: startTime5}
+    });
+  })
+  .then(emotion => {
+
+    if (!emotion){
+      emotionTypeInFifthScene = '없음';
+      numberOfReviewersFeltInFifthScene = 0;
+    }
+    else{
+      emotionTypeInFifthScene = emotion.emotion;
+      let emotionRate = emotion.emotionRate;
+      numberOfReviewersFeltInFifthScene = emotionRate * numOfTotalReviewers; 
+    }
+
+    return Highlight.findOne({
+      where:{videoId:videoId}
+  });
+})
+.then(highlight => {
+
+  highlight.dataValues.numOfTotalReviewers = numOfTotalReviewers;
+
+  highlight.dataValues.numberOfReviewersConcentratedInFirstScene = parseInt(numberOfReviewersConcentratedInFirstScene);
+  highlight.dataValues.emotionTypeInFirstScene = emotionTypeInFirstScene;
+  highlight.dataValues.numberOfReviewersFeltInFirstScene = parseInt(numberOfReviewersFeltInFirstScene);
+
+  highlight.dataValues.numberOfReviewersConcentratedInSecondScene = parseInt(numberOfReviewersConcentratedInSecondScene);
+  highlight.dataValues.emotionTypeInSecondScene = emotionTypeInSecondScene;
+  highlight.dataValues.numberOfReviewersFeltInSecondScene = parseInt(numberOfReviewersFeltInSecondScene);
+
+  highlight.dataValues.numberOfReviewersConcentratedInThirdScene = parseInt(numberOfReviewersConcentratedInThirdScene);
+  highlight.dataValues.emotionTypeInThirdScene = emotionTypeInThirdScene;
+  highlight.dataValues.numberOfReviewersFeltInThirdScene = parseInt(numberOfReviewersFeltInThirdScene);
+
+  highlight.dataValues.numberOfReviewersConcentratedInFourthScene = parseInt(numberOfReviewersConcentratedInFourthScene);
+  highlight.dataValues.emotionTypeInFourthScene = emotionTypeInFourthScene;
+  highlight.dataValues.numberOfReviewersFeltInFourthScene = parseInt(numberOfReviewersFeltInFourthScene);
+
+  highlight.dataValues.numberOfReviewersConcentratedInFifthScene = parseInt(numberOfReviewersConcentratedInFifthScene);
+  highlight.dataValues.emotionTypeInFifthScene = emotionTypeInFifthScene;
+  highlight.dataValues.numberOfReviewersFeltInFifthScene = parseInt(numberOfReviewersFeltInFifthScene);
+  
+  HighlightReport[1] = highlight;
+
+  res.status(200).json({originalVideoURL:HighlightReport[0], highlight:HighlightReport[1]});
+  
+  
+
+})
+.catch(err => {
+  if(!err.statusCode){
+      err.statusCode = 500;
+  }
+  next(err);
+})
+}

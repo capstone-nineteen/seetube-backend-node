@@ -66,6 +66,10 @@ const Video = sequelize.define('video', {
     creator: {
         type: Sequelize.STRING,
         allowNull:false
+    },
+    importantEmotion:{
+        type: Sequelize.STRING,
+        allowNull: true
     }
 });
 

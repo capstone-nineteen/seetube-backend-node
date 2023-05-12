@@ -32,4 +32,10 @@ router.get('/focus/:videoId', youtuberController.getFocus);
 
 router.get('/emotion/:videoId', youtuberController.getEmotion);
 
+router.get('/sceneStealer/:videoId', youtuberController.getSceneStealer);
+
+router.get('/shorts/:videoId', youtuberController.getShorts);
+
+router.get('/highlight/:videoId', youtuberController.getHighlight);
+
 module.exports = router;

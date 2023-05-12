@@ -17,6 +17,9 @@ const Withdraw = require('./models/withdraw');
 const WatchingInfo = require('./models/watchingInfo');
 const Focus = require('./models/focus');
 const Emotion = require('./models/emotion');
+const SceneStealer = require('./models/sceneStealer');
+const Shorts = require('./models/shorts');
+const Highlight = require('./models/highlight');
 
 Video.belongsTo(Youtuber, { constraints: true, onDelete: 'CASCADE'});
 Youtuber.hasMany(Video);
@@ -41,6 +44,15 @@ Video.hasMany(Focus);
 
 Emotion.belongsTo(Video, { constraints: true, onDelete:'CASCADE'});
 Video.hasMany(Emotion);
+
+SceneStealer.belongsTo(Video, { constraints: true, onDelete: 'CASCADE'});
+Video.hasMany(SceneStealer);
+
+Shorts.belongsTo(Video, { constraints: true, onDelete: 'CASCADE'});
+Video.hasMany(Shorts);
+
+Highlight.belongsTo(Video, { constraints: true, onDelete: 'CASCADE'});
+Video.hasOne(Highlight);
 
 const app = express();
 
