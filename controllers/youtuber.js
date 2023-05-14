@@ -368,7 +368,7 @@ exports.getHighlight = (req, res, next) => {
 
   const videoId = req.params.videoId;
 
-  const HighlightReport = [];
+  
   
   var numOfTotalReviewers = 0;
 
@@ -376,31 +376,35 @@ exports.getHighlight = (req, res, next) => {
   var numberOfReviewersConcentratedInFirstScene = 0;
   var numberOfReviewersFeltInFirstScene = 0;
   var emotionTypeInFirstScene = '';
+  var thumbnailURLInFirstScene = '';
 
   var startTime2 = 0;
   var numberOfReviewersConcentratedInSecondScene = 0;
   var numberOfReviewersFeltInSecondScene = 0;
   var emotionTypeInSecondScene = '';
+  var thumbnailURLInSecondScene = '';
 
   var startTime3 = 0;
   var numberOfReviewersConcentratedInThirdScene = 0;
   var numberOfReviewersFeltInThirdScene = 0;
   var emotionTypeInThirdScene = '';
+  var thumbnailURLInThirdScene = '';
 
   var startTime4 = 0;
   var numberOfReviewersConcentratedInFourthScene = 0;
   var numberOfReviewersFeltInFourthScene = 0;
   var emotionTypeInFourthScene = '';
+  var thumbnailURLInFourthScene = '';
 
   var startTime5 = 0;
   var numberOfReviewersConcentratedInFifthScene = 0;
   var numberOfReviewersFeltInFifthScene = 0;
   var emotionTypeInFifthScene = '';
-
+  var thumbnailURLInFifthScene = '';
   
   Video.findOne({
     where:{id: videoId},
-    attributes:['reviewGoal','videoPath']
+    attributes:['reviewGoal']
   })
   .then(video => {
 
@@ -438,6 +442,7 @@ exports.getHighlight = (req, res, next) => {
     else{
     let focusRate = focus.focusRate;
     numberOfReviewersConcentratedInFirstScene = focusRate * numOfTotalReviewers;
+    thumbnailURLInFirstScene = focus.thumbnailURL;
     }
 
     return Emotion.findOne({
@@ -453,7 +458,7 @@ exports.getHighlight = (req, res, next) => {
     else{
       emotionTypeInFirstScene = emotion.emotion;
       let emotionRate = emotion.emotionRate;
-      numberOfReviewersFeltInFirstScene = emotionRate * numOfTotalReviewers; 
+      numberOfReviewersFeltInFirstScene = emotionRate * numOfTotalReviewers;
     }
 
     return Focus.findOne({
@@ -468,6 +473,7 @@ exports.getHighlight = (req, res, next) => {
     else{
     let focusRate = focus.focusRate;
     numberOfReviewersConcentratedInSecondScene = focusRate * numOfTotalReviewers;
+    thumbnailURLInSecondScene = focus.thumbnailURL;
     }
 
     return Emotion.findOne({
@@ -498,6 +504,7 @@ exports.getHighlight = (req, res, next) => {
     else{
     let focusRate = focus.focusRate;
     numberOfReviewersConcentratedInThirdScene = focusRate * numOfTotalReviewers;
+    thumbnailURLInThirdScene = focus.thumbnailURL;
     }
 
     return Emotion.findOne({
@@ -528,6 +535,7 @@ exports.getHighlight = (req, res, next) => {
     else{
     let focusRate = focus.focusRate;
     numberOfReviewersConcentratedInFourthScene = focusRate * numOfTotalReviewers;
+    thumbnailURLInFourthScene = focus.thumbnailURL;
     }
 
     return Emotion.findOne({
@@ -558,6 +566,7 @@ exports.getHighlight = (req, res, next) => {
     else{
     let focusRate = focus.focusRate;
     numberOfReviewersConcentratedInFifthScene = focusRate * numOfTotalReviewers;
+    thumbnailURLInFifthScene = focus.thumbnailURL;
     }
 
     return Emotion.findOne({
@@ -587,26 +596,34 @@ exports.getHighlight = (req, res, next) => {
   highlight.dataValues.numberOfReviewersConcentratedInFirstScene = parseInt(numberOfReviewersConcentratedInFirstScene);
   highlight.dataValues.emotionTypeInFirstScene = emotionTypeInFirstScene;
   highlight.dataValues.numberOfReviewersFeltInFirstScene = parseInt(numberOfReviewersFeltInFirstScene);
+  highlight.dataValues.thumbnailURLInFirstScene = thumbnailURLInFirstScene;
 
   highlight.dataValues.numberOfReviewersConcentratedInSecondScene = parseInt(numberOfReviewersConcentratedInSecondScene);
   highlight.dataValues.emotionTypeInSecondScene = emotionTypeInSecondScene;
   highlight.dataValues.numberOfReviewersFeltInSecondScene = parseInt(numberOfReviewersFeltInSecondScene);
+  highlight.dataValues.thumbnailURLInSecondScene = thumbnailURLInSecondScene;
+
 
   highlight.dataValues.numberOfReviewersConcentratedInThirdScene = parseInt(numberOfReviewersConcentratedInThirdScene);
   highlight.dataValues.emotionTypeInThirdScene = emotionTypeInThirdScene;
   highlight.dataValues.numberOfReviewersFeltInThirdScene = parseInt(numberOfReviewersFeltInThirdScene);
+  highlight.dataValues.thumbnailURLInThirdScene = thumbnailURLInThirdScene;
+
 
   highlight.dataValues.numberOfReviewersConcentratedInFourthScene = parseInt(numberOfReviewersConcentratedInFourthScene);
   highlight.dataValues.emotionTypeInFourthScene = emotionTypeInFourthScene;
   highlight.dataValues.numberOfReviewersFeltInFourthScene = parseInt(numberOfReviewersFeltInFourthScene);
+  highlight.dataValues.thumbnailURLInFourthScene = thumbnailURLInFourthScene;
+
 
   highlight.dataValues.numberOfReviewersConcentratedInFifthScene = parseInt(numberOfReviewersConcentratedInFifthScene);
   highlight.dataValues.emotionTypeInFifthScene = emotionTypeInFifthScene;
   highlight.dataValues.numberOfReviewersFeltInFifthScene = parseInt(numberOfReviewersFeltInFifthScene);
+  highlight.dataValues.thumbnailURLInFifthScene = thumbnailURLInFifthScene;
   
-  HighlightReport[1] = highlight;
+  
 
-  res.status(200).json({originalVideoURL:HighlightReport[0], highlight:HighlightReport[1]});
+  res.status(200).json({highlight:highlight});
   
   
 

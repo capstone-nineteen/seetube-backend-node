@@ -4,7 +4,7 @@ const smtpTransport = nodemailer.createTransport({
     service: "gmail",
     auth: {
         user: "kyr1360@ewhain.net",
-        pass: "sevddxiitkcvaqle"
+        pass: ""
     },
     tls: {
         rejectUnauthorized: false

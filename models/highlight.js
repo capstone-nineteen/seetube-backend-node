@@ -11,7 +11,7 @@ const Highlight = sequelize.define('highlight', {
         primaryKey:true
     },
 
-    thumbnailURL: {
+    videoURL: {
         type:Sequelize.TEXT,
         allowNull:false
     },
@@ -37,6 +37,22 @@ const Highlight = sequelize.define('highlight', {
         allowNull: false
     },
 
+
+    FirstSceneFocusRate: {
+        type:Sequelize.FLOAT,
+        allowNull: false
+    },
+
+    FirstSceneEmotion: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+
+    FirstSceneEmotionRate: {
+        type:Sequelize.FLOAT,
+        allowNull: false
+    },
+
     SecondSceneStartTimeInOriginalVideo: {
         type:Sequelize.INTEGER,
         allowNull:false
@@ -57,6 +73,22 @@ const Highlight = sequelize.define('highlight', {
         allowNull: false
     },
 
+    SecondSceneFocusRate: {
+        type:Sequelize.FLOAT,
+        allowNull:false
+    },
+
+    SecondSceneEmotion: {
+        type: Sequelize.STRING,
+        allowNull:false
+    },
+
+    SecondSceneEmotionRate: {
+        type: Sequelize.FLOAT,
+        allowNull: false
+    },
+
+
     ThirdSceneStartTimeInOriginalVideo: {
         type:Sequelize.INTEGER,
         allowNull:false
@@ -74,6 +106,21 @@ const Highlight = sequelize.define('highlight', {
 
     ThirdSceneEndTimeInHighlight: {
         type:Sequelize.INTEGER,
+        allowNull: false
+    },
+
+    ThirdSceneFocusRate:{
+        type:Sequelize.FLOAT,
+        allowNull: false
+    },
+
+    ThirdSceneEmotion: {
+        type:Sequelize.STRING,
+        allowNull:false
+    },
+
+    ThirdSceneEmotionRate: {
+        type:Sequelize.FLOAT,
         allowNull: false
     },
 
