@@ -704,6 +704,10 @@ exports.postReview = (req, res, next) => {
 
     Video.findByPk(videoId).then(video => {
         videoCoin = video.videoCoin;
+        reviewCurrent = video.reviewCurrent;
+        reviewCurrent += 1;
+        video.update({reviewCurrent: reviewCurrent});
+        
         return Reviewer.findByPk(reviewerId)
     }).then(reviewer => {
         previousCoin = reviewer.reviewerCoin;
