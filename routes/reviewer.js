@@ -41,7 +41,7 @@ router.get('/videos/category/:categoryName', isAuth, reviewerController.getVideo
 router.get('/videos/search', isAuth, reviewerController.searchVideos);
 
 //영상 상세화면
-router.get('/video/:videoId', isAuth, videoController.getVideo);
+router.get('/video/:videoId', videoController.getVideo);
 
 //마이페이지
 router.get('/mypage', isAuth, reviewerController.getMyPage);

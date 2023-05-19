@@ -161,8 +161,8 @@ exports.login = (req, res, next) => {
 //유튜버 홈
 exports.getYoutuberHome = (req, res, next) => {
 
-    
-    const youtuberId = req.id;
+    const youtuberId = 5;
+    //const youtuberId = req.id;
 
     const youtuberHome = [];
 
@@ -364,6 +364,10 @@ exports.getShorts = (req, res, next) => {
 
 }
 
+
+
+
+
 exports.getHighlight = (req, res, next) => {
 
   const videoId = req.params.videoId;
@@ -372,35 +376,20 @@ exports.getHighlight = (req, res, next) => {
   
   var numOfTotalReviewers = 0;
 
-  var startTime1 = 0;
   var numberOfReviewersConcentratedInFirstScene = 0;
   var numberOfReviewersFeltInFirstScene = 0;
-  var emotionTypeInFirstScene = '';
-  var thumbnailURLInFirstScene = '';
-
-  var startTime2 = 0;
+  
   var numberOfReviewersConcentratedInSecondScene = 0;
   var numberOfReviewersFeltInSecondScene = 0;
-  var emotionTypeInSecondScene = '';
-  var thumbnailURLInSecondScene = '';
-
-  var startTime3 = 0;
+  
   var numberOfReviewersConcentratedInThirdScene = 0;
   var numberOfReviewersFeltInThirdScene = 0;
-  var emotionTypeInThirdScene = '';
-  var thumbnailURLInThirdScene = '';
-
-  var startTime4 = 0;
+  
   var numberOfReviewersConcentratedInFourthScene = 0;
   var numberOfReviewersFeltInFourthScene = 0;
-  var emotionTypeInFourthScene = '';
-  var thumbnailURLInFourthScene = '';
-
-  var startTime5 = 0;
+  
   var numberOfReviewersConcentratedInFifthScene = 0;
   var numberOfReviewersFeltInFifthScene = 0;
-  var emotionTypeInFifthScene = '';
-  var thumbnailURLInFifthScene = '';
   
   Video.findOne({
     where:{id: videoId},
@@ -414,7 +403,7 @@ exports.getHighlight = (req, res, next) => {
       throw error;
     }
 
-    HighlightReport[0] = video.videoPath;
+    
     numOfTotalReviewers = video.reviewGoal;
 
     return Highlight.findOne({
@@ -424,210 +413,44 @@ exports.getHighlight = (req, res, next) => {
   })
   .then(highlight => {
 
-    startTime1 = highlight.FirstSceneStartTimeInOriginalVideo;
-    startTime2 = highlight.SecondSceneStartTimeInOriginalVideo;
-    startTime3 = highlight.ThirdSceneStartTimeInOriginalVideo;
-    startTime4 = highlight.FourthSceneStartTimeInOriginalVideo;
-    startTime5 = highlight.FifthSceneStartTimeInOriginalVideo;
-    
-    return Focus.findOne({
-      where: {focusStartTime: startTime1}
-    });
+    numberOfReviewersConcentratedInFirstScene = highlight.focusRateInFirstScene * numOfTotalReviewers;
+    numberOfReviewersFeltInFirstScene = highlight.emotionRateInFirstScene * numOfTotalReviewers;
+
+    numberOfReviewersConcentratedInSecondScene = highlight.focusRateInSecondScene * numOfTotalReviewers;
+    numberOfReviewersFeltInSecondScene = highlight.focusRateInSecondScene * numOfTotalReviewers;
+
+    numberOfReviewersConcentratedInThirdScene = highlight.focusRateInThirdScene * numOfTotalReviewers;
+    numberOfReviewersFeltInThirdScene = highlight.focusRateInThirdScene * numOfTotalReviewers;
+
+    numberOfReviewersConcentratedInFourthScene = highlight.focusRateInFourthScene * numOfTotalReviewers;
+    numberOfReviewersFeltInFourthScene = highlight.focusRateInFourthScene * numOfTotalReviewers;
+
+    numberOfReviewersConcentratedInFifthScene = highlight.focusRateInFifthScene * numOfTotalReviewers;
+    numberOfReviewersFeltInFifthScene = highlight.focusRateInFifthScene * numOfTotalReviewers;
+
+    highlight.dataValues.numberOfReviewersConcentratedInFirstScene = parseInt(numberOfReviewersConcentratedInFirstScene);
+    highlight.dataValues.numberOfReviewersFeltInFirstScene = parseInt(numberOfReviewersFeltInFirstScene);
+
+    highlight.dataValues.numberOfReviewersConcentratedInSecondScene = parseInt(numberOfReviewersConcentratedInSecondScene);
+    highlight.dataValues.numberOfReviewersFeltInSecondScene = parseInt(numberOfReviewersFeltInSecondScene);
+
+    highlight.dataValues.numberOfReviewersConcentratedInThirdScene = parseInt(numberOfReviewersConcentratedInThirdScene);
+    highlight.dataValues.numberOfReviewersFeltInThirdScene = parseInt(numberOfReviewersFeltInThirdScene);
+
+    highlight.dataValues.numberOfReviewersConcentratedInFourthScene = parseInt(numberOfReviewersConcentratedInFourthScene);
+    highlight.dataValues.numberOfReviewersFeltInFourthScene = parseInt(numberOfReviewersFeltInFourthScene);
+
+    highlight.dataValues.numberOfReviewersConcentratedInFifthScene = parseInt(numberOfReviewersConcentratedInFifthScene);
+    highlight.dataValues.numberOfReviewersFeltInFifthScene = parseInt(numberOfReviewersFeltInFifthScene);
+
+    highlight.dataValues.emotionTypeInFirstScene = highlight.emotionInFirstScene;
+    highlight.dataValues.emotionTypeInSecondScene = highlight.emotionInSecondScene;
+    highlight.dataValues.emotionTypeInThirdScene = highlight.emotionInThirdScene;
+    highlight.dataValues.emotionTypeInFourthScene = highlight.emotionInFourthScene;
+    highlight.dataValues.emotionTypeInFifthScene = highlight.emotionInFifthScene;
+
+    res.status(200).json({highlight:highlight});
   })
-  .then(focus => {
-    
-    if (!focus){
-      numberOfReviewersConcentratedInFirstScene = 0;
-    }
-    else{
-    let focusRate = focus.focusRate;
-    numberOfReviewersConcentratedInFirstScene = focusRate * numOfTotalReviewers;
-    thumbnailURLInFirstScene = focus.thumbnailURL;
-    }
-
-    return Emotion.findOne({
-      where: {emotionStartTime: startTime1}
-    });
-  })
-  .then(emotion => {
-
-    if (!emotion){
-      emotionTypeInFirstScene = '없음';
-      numberOfReviewersFeltInFirstScene = 0;
-    }
-    else{
-      emotionTypeInFirstScene = emotion.emotion;
-      let emotionRate = emotion.emotionRate;
-      numberOfReviewersFeltInFirstScene = emotionRate * numOfTotalReviewers;
-    }
-
-    return Focus.findOne({
-      where: {focusStartTime: startTime2}
-    });
-  })
-  .then(focus => {
-    
-    if (!focus){
-      numberOfReviewersConcentratedInSecondScene = 0;
-    }
-    else{
-    let focusRate = focus.focusRate;
-    numberOfReviewersConcentratedInSecondScene = focusRate * numOfTotalReviewers;
-    thumbnailURLInSecondScene = focus.thumbnailURL;
-    }
-
-    return Emotion.findOne({
-      where: {emotionStartTime: startTime2}
-    });
-  })
-  .then(emotion => {
-
-    if (!emotion){
-      emotionTypeInSecondScene = '없음';
-      numberOfReviewersFeltInSecondScene = 0;
-    }
-    else{
-      emotionTypeInSecondScene = emotion.emotion;
-      let emotionRate = emotion.emotionRate;
-      numberOfReviewersFeltInSecondScene = emotionRate * numOfTotalReviewers; 
-    }
-
-    return Focus.findOne({
-      where: {focusStartTime: startTime3}
-    });
-  })
-  .then(focus => {
-    
-    if (!focus){
-      numberOfReviewersConcentratedInThirdScene = 0;
-    }
-    else{
-    let focusRate = focus.focusRate;
-    numberOfReviewersConcentratedInThirdScene = focusRate * numOfTotalReviewers;
-    thumbnailURLInThirdScene = focus.thumbnailURL;
-    }
-
-    return Emotion.findOne({
-      where: {emotionStartTime: startTime3}
-    });
-  })
-  .then(emotion => {
-
-    if (!emotion){
-      emotionTypeInThirdScene = '없음';
-      numberOfReviewersFeltInThirdScene = 0;
-    }
-    else{
-      emotionTypeInThirdScene = emotion.emotion;
-      let emotionRate = emotion.emotionRate;
-      numberOfReviewersFeltInThirdScene = emotionRate * numOfTotalReviewers; 
-    }
-
-    return Focus.findOne({
-      where: {focusStartTime: startTime4}
-    });
-  })
-  .then(focus => {
-    
-    if (!focus){
-      numberOfReviewersConcentratedInFourthScene = 0;
-    }
-    else{
-    let focusRate = focus.focusRate;
-    numberOfReviewersConcentratedInFourthScene = focusRate * numOfTotalReviewers;
-    thumbnailURLInFourthScene = focus.thumbnailURL;
-    }
-
-    return Emotion.findOne({
-      where: {emotionStartTime: startTime4}
-    });
-  })
-  .then(emotion => {
-
-    if (!emotion){
-      emotionTypeInFourthScene = '없음';
-      numberOfReviewersFeltInFourthScene = 0;
-    }
-    else{
-      emotionTypeInFourthScene = emotion.emotion;
-      let emotionRate = emotion.emotionRate;
-      numberOfReviewersFeltInFourthScene = emotionRate * numOfTotalReviewers; 
-    }
-
-    return Focus.findOne({
-      where: {focusStartTime: startTime5}
-    });
-  })
-  .then(focus => {
-    
-    if (!focus){
-      numberOfReviewersConcentratedInFifthScene = 0;
-    }
-    else{
-    let focusRate = focus.focusRate;
-    numberOfReviewersConcentratedInFifthScene = focusRate * numOfTotalReviewers;
-    thumbnailURLInFifthScene = focus.thumbnailURL;
-    }
-
-    return Emotion.findOne({
-      where: {emotionStartTime: startTime5}
-    });
-  })
-  .then(emotion => {
-
-    if (!emotion){
-      emotionTypeInFifthScene = '없음';
-      numberOfReviewersFeltInFifthScene = 0;
-    }
-    else{
-      emotionTypeInFifthScene = emotion.emotion;
-      let emotionRate = emotion.emotionRate;
-      numberOfReviewersFeltInFifthScene = emotionRate * numOfTotalReviewers; 
-    }
-
-    return Highlight.findOne({
-      where:{videoId:videoId}
-  });
-})
-.then(highlight => {
-
-  highlight.dataValues.numOfTotalReviewers = numOfTotalReviewers;
-
-  highlight.dataValues.numberOfReviewersConcentratedInFirstScene = parseInt(numberOfReviewersConcentratedInFirstScene);
-  highlight.dataValues.emotionTypeInFirstScene = emotionTypeInFirstScene;
-  highlight.dataValues.numberOfReviewersFeltInFirstScene = parseInt(numberOfReviewersFeltInFirstScene);
-  highlight.dataValues.thumbnailURLInFirstScene = thumbnailURLInFirstScene;
-
-  highlight.dataValues.numberOfReviewersConcentratedInSecondScene = parseInt(numberOfReviewersConcentratedInSecondScene);
-  highlight.dataValues.emotionTypeInSecondScene = emotionTypeInSecondScene;
-  highlight.dataValues.numberOfReviewersFeltInSecondScene = parseInt(numberOfReviewersFeltInSecondScene);
-  highlight.dataValues.thumbnailURLInSecondScene = thumbnailURLInSecondScene;
-
-
-  highlight.dataValues.numberOfReviewersConcentratedInThirdScene = parseInt(numberOfReviewersConcentratedInThirdScene);
-  highlight.dataValues.emotionTypeInThirdScene = emotionTypeInThirdScene;
-  highlight.dataValues.numberOfReviewersFeltInThirdScene = parseInt(numberOfReviewersFeltInThirdScene);
-  highlight.dataValues.thumbnailURLInThirdScene = thumbnailURLInThirdScene;
-
-
-  highlight.dataValues.numberOfReviewersConcentratedInFourthScene = parseInt(numberOfReviewersConcentratedInFourthScene);
-  highlight.dataValues.emotionTypeInFourthScene = emotionTypeInFourthScene;
-  highlight.dataValues.numberOfReviewersFeltInFourthScene = parseInt(numberOfReviewersFeltInFourthScene);
-  highlight.dataValues.thumbnailURLInFourthScene = thumbnailURLInFourthScene;
-
-
-  highlight.dataValues.numberOfReviewersConcentratedInFifthScene = parseInt(numberOfReviewersConcentratedInFifthScene);
-  highlight.dataValues.emotionTypeInFifthScene = emotionTypeInFifthScene;
-  highlight.dataValues.numberOfReviewersFeltInFifthScene = parseInt(numberOfReviewersFeltInFifthScene);
-  highlight.dataValues.thumbnailURLInFifthScene = thumbnailURLInFifthScene;
-  
-  
-
-  res.status(200).json({highlight:highlight});
-  
-  
-
-})
 .catch(err => {
   if(!err.statusCode){
       err.statusCode = 500;

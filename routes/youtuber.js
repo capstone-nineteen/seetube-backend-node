@@ -28,14 +28,14 @@ router.post('/login', youtuberController.login);
 
 router.get('/home', isAuth, youtuberController.getYoutuberHome);
 
-router.get('/focus/:videoId', youtuberController.getFocus);
+router.get('/focus/:videoId', isAuth, youtuberController.getFocus);
 
-router.get('/emotion/:videoId', youtuberController.getEmotion);
+router.get('/emotion/:videoId', isAuth, youtuberController.getEmotion);
 
-router.get('/sceneStealer/:videoId', youtuberController.getSceneStealer);
+router.get('/sceneStealer/:videoId', isAuth, youtuberController.getSceneStealer);
 
-router.get('/shorts/:videoId', youtuberController.getShorts);
+router.get('/shorts/:videoId', isAuth, youtuberController.getShorts);
 
-router.get('/highlight/:videoId', youtuberController.getHighlight);
+router.get('/highlight/:videoId', isAuth, youtuberController.getHighlight);
 
 module.exports = router;

@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('seetube', 'root', 'nineteen1919!', {
+const sequelize = new Sequelize('seetube', 'root', '', {
   dialect: 'mysql',
-  host: 'localhost',
+  host: '',
   timezone: '+09:00'
 });
 

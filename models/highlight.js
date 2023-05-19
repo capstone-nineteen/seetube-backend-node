@@ -37,22 +37,27 @@ const Highlight = sequelize.define('highlight', {
         allowNull: false
     },
 
+    thumbnailInFirstScene: {
+        type:Sequelize.TEXT,
+        allowNull:false
+    },
 
-    FirstSceneFocusRate: {
+    focusRateInFirstScene: {
         type:Sequelize.FLOAT,
-        allowNull: false
+        allowNull:false
     },
 
-    FirstSceneEmotion: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-
-    FirstSceneEmotionRate: {
+    emotionRateInFirstScene: {
         type:Sequelize.FLOAT,
-        allowNull: false
+        allowNull:false
     },
 
+    emotionInFirstScene: {
+        type:Sequelize.STRING,
+        allowNull:false
+    },
+
+    
     SecondSceneStartTimeInOriginalVideo: {
         type:Sequelize.INTEGER,
         allowNull:false
@@ -73,19 +78,24 @@ const Highlight = sequelize.define('highlight', {
         allowNull: false
     },
 
-    SecondSceneFocusRate: {
+    thumbnailInSecondScene: {
+        type:Sequelize.TEXT,
+        allowNull:false
+    },
+
+    focusRateInSecondScene: {
         type:Sequelize.FLOAT,
         allowNull:false
     },
 
-    SecondSceneEmotion: {
-        type: Sequelize.STRING,
+    emotionRateInSecondScene: {
+        type:Sequelize.FLOAT,
         allowNull:false
     },
 
-    SecondSceneEmotionRate: {
-        type: Sequelize.FLOAT,
-        allowNull: false
+    emotionInSecondScene: {
+        type:Sequelize.STRING,
+        allowNull:false
     },
 
 
@@ -109,19 +119,24 @@ const Highlight = sequelize.define('highlight', {
         allowNull: false
     },
 
-    ThirdSceneFocusRate:{
-        type:Sequelize.FLOAT,
-        allowNull: false
-    },
-
-    ThirdSceneEmotion: {
-        type:Sequelize.STRING,
+    thumbnailInThirdScene: {
+        type:Sequelize.TEXT,
         allowNull:false
     },
 
-    ThirdSceneEmotionRate: {
+    focusRateInThirdScene: {
         type:Sequelize.FLOAT,
-        allowNull: false
+        allowNull:false
+    },
+
+    emotionRateInThirdScene: {
+        type:Sequelize.FLOAT,
+        allowNull:false
+    },
+
+    emotionInThirdScene: {
+        type:Sequelize.STRING,
+        allowNull:false
     },
 
     FourthSceneStartTimeInOriginalVideo: {
@@ -144,6 +159,26 @@ const Highlight = sequelize.define('highlight', {
         allowNull: false
     },
 
+    thumbnailInFourthScene: {
+        type:Sequelize.TEXT,
+        allowNull:false
+    },
+
+    focusRateInFourthScene: {
+        type:Sequelize.FLOAT,
+        allowNull:false
+    },
+
+    emotionRateInFourthScene: {
+        type:Sequelize.FLOAT,
+        allowNull:false
+    },
+
+    emotionInFourthScene: {
+        type:Sequelize.STRING,
+        allowNull:false
+    },
+
     FifthSceneStartTimeInOriginalVideo: {
         type:Sequelize.INTEGER,
         allowNull:false
@@ -162,7 +197,27 @@ const Highlight = sequelize.define('highlight', {
     FifthSceneEndTimeInHighlight: {
         type:Sequelize.INTEGER,
         allowNull: false
-    }
+    },
+
+    thumbnailInFifthScene: {
+        type:Sequelize.TEXT,
+        allowNull:false
+    },
+
+    focusRateInFifthScene: {
+        type:Sequelize.FLOAT,
+        allowNull:false
+    },
+
+    emotionRateInFifthScene: {
+        type:Sequelize.FLOAT,
+        allowNull:false
+    },
+
+    emotionInFifthScene: {
+        type:Sequelize.STRING,
+        allowNull:false
+    },
 
     
 },

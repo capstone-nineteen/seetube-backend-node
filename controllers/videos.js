@@ -8,7 +8,7 @@ const Review = require('../models/review');
 //영상 상세화면
 exports.getVideo = (req, res, next) => {
 
-    const reviewerId = req.userId;
+    
     const videoId = req.params.videoId;
     
     const videoObject = {};
