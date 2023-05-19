@@ -161,7 +161,7 @@ exports.login = (req, res, next) => {
 //유튜버 홈
 exports.getYoutuberHome = (req, res, next) => {
 
-    const youtuberId = 5;
+    const youtuberId = req.id;
     //const youtuberId = req.id;
 
     const youtuberHome = [];
