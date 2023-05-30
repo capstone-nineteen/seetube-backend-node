@@ -2,7 +2,7 @@
 
 Node.js 기반 RESTful API 서버
 
-## 구축 환경
+### 구축 환경
 
 - 서버
   - Node.js
