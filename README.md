@@ -3,9 +3,13 @@
 ### 구축 환경
 
 ##### 서버
+
   - Node.js
   - AWS EC2 (Ubuntu 18.04 LTS 64bit)
   - Nginx
 ##### DB
+
+<img src="https://1000logos.net/wp-content/uploads/2020/08/MySQL-Logo.png" width="30%" height="30%>
+                                                                                               
   - MYSQL
 
