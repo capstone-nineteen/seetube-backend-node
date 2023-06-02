@@ -4,7 +4,7 @@
 
 ##### 서버
 
-<img src="https://w7.pngwing.com/pngs/722/830/png-transparent-node-js-javascript-asynchronous-i-o-chrome-v8-event-driven-programming-others.png" width="30%" height="30%">
+<img src="https://github.com/capstone-nineteen/seetube-backend-node/assets/65602906/4249d158-2ecb-4401-9de9-5347fcf7781d" width="30%" height="30%">
 
   - Nodejs
   - AWS EC2 (Ubuntu 18.04 LTS 64bit)
