@@ -4,7 +4,7 @@
 
 ##### 서버
 
-<imgs src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/2560px-Node.js_logo.svg.png" width="30%" height="30%">
+<imgs src="https://w7.pngwing.com/pngs/722/830/png-transparent-node-js-javascript-asynchronous-i-o-chrome-v8-event-driven-programming-others.png" width="30%" height="30%">
   
   - Node.js
   - AWS EC2 (Ubuntu 18.04 LTS 64bit)
