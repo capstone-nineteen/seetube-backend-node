@@ -4,7 +4,7 @@
 
 ##### 서버
 
-<img src="https://github.com/capstone-nineteen/seetube-backend-node/assets/65602906/4249d158-2ecb-4401-9de9-5347fcf7781d" width="60%" height="60%">
+<img src="https://github.com/capstone-nineteen/seetube-backend-node/assets/65602906/4249d158-2ecb-4401-9de9-5347fcf7781d" width="70%" height="70%">
 
   - Nodejs
   - AWS EC2 (Ubuntu 18.04 LTS 64bit)
